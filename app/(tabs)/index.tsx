@@ -7,6 +7,11 @@ export default function HomeScreen() {
 
   const allergyOptions = ['gluten', 'dairy', 'peanut', 'shellfish'];
 
+  const isSafe = (restaurant: any) => {
+  return selectedAllergies.every(
+    (allergy) => !restaurant.allergens.includes(allergy)
+  );
+};
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
       <Text style={{ fontSize: 24, fontWeight: '600', marginBottom: 20 }}>
@@ -43,8 +48,8 @@ export default function HomeScreen() {
         .filter(
           (restaurant) =>
             selectedAllergies.length === 0 ||
-            selectedAllergies.every((allergy) =>
-              restaurant.allergens.includes(allergy)
+            selectedAllergies.every(
+              (allergy) => !restaurant.allergens.includes(allergy)
             )
         )
         .map((restaurant) => (
@@ -57,9 +62,14 @@ export default function HomeScreen() {
               borderColor: '#ddd',
               borderRadius: 8,
             }}
+
           >
             <Text style={{ fontSize: 18, fontWeight: '600' }}>
               {restaurant.name}
+            </Text>
+            
+            <Text style={{ marginTop: 6 }}>
+              {isSafe(restaurant) ? '✅ Safe choice' : '⚠️ Contains selected allergens'}
             </Text>
 
             <Text>{restaurant.cuisine}</Text>

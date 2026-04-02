@@ -1,3 +1,4 @@
+
 export const restaurants = [
   {
     id: '1',
