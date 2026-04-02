@@ -8,10 +8,19 @@ export default function HomeScreen() {
   const allergyOptions = ['gluten', 'dairy', 'peanut', 'shellfish'];
 
   const isSafe = (restaurant: any) => {
-  return selectedAllergies.every(
-    (allergy) => !restaurant.allergens.includes(allergy)
+    return selectedAllergies.every(
+      (allergy) => !restaurant.allergens.includes(allergy)
+    );
+  };
+
+  const filteredRestaurants = restaurants.filter(
+    (restaurant) =>
+      selectedAllergies.length === 0 ||
+      selectedAllergies.every(
+        (allergy) => !restaurant.allergens.includes(allergy)
+      )
   );
-};
+
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
       <Text style={{ fontSize: 24, fontWeight: '600', marginBottom: 20 }}>
@@ -44,47 +53,44 @@ export default function HomeScreen() {
         ))}
       </View>
 
-      {restaurants
-        .filter(
-          (restaurant) =>
-            selectedAllergies.length === 0 ||
-            selectedAllergies.every(
-              (allergy) => !restaurant.allergens.includes(allergy)
-            )
-        )
-        .map((restaurant) => (
-          <View
-            key={restaurant.id}
-            style={{
-              marginBottom: 16,
-              padding: 16,
-              borderWidth: 1,
-              borderColor: '#ddd',
-              borderRadius: 8,
-            }}
+      {filteredRestaurants.length === 0 && (
+        <Text style={{ marginTop: 20 }}>
+          No restaurants match your selected allergies.
+        </Text>
+      )}
 
-          >
-            <Text style={{ fontSize: 18, fontWeight: '600' }}>
-              {restaurant.name}
-            </Text>
-            
-            <Text style={{ marginTop: 6 }}>
-              {isSafe(restaurant) ? '✅ Safe choice' : '⚠️ Contains selected allergens'}
-            </Text>
+      {filteredRestaurants.map((restaurant) => (
+        <View
+          key={restaurant.id}
+          style={{
+            marginBottom: 16,
+            padding: 16,
+            borderWidth: 1,
+            borderColor: '#ddd',
+            borderRadius: 8,
+          }}
+        >
+          <Text style={{ fontSize: 18, fontWeight: '600' }}>
+            {restaurant.name}
+          </Text>
 
-            <Text>{restaurant.cuisine}</Text>
+          <Text style={{ marginTop: 6 }}>
+            {isSafe(restaurant) ? '✅ Safe choice' : '⚠️ Contains selected allergens'}
+          </Text>
 
+          <Text>{restaurant.cuisine}</Text>
+
+          <Text style={{ marginTop: 8 }}>
+            Allergies: {restaurant.allergens.join(', ')}
+          </Text>
+
+          {restaurant.callAhead && (
             <Text style={{ marginTop: 8 }}>
-              Allergies: {restaurant.allergens.join(', ')}
+              Call ahead recommended
             </Text>
-
-            {restaurant.callAhead && (
-              <Text style={{ marginTop: 8 }}>
-                Call ahead recommended
-              </Text>
-            )}
-          </View>
-        ))}
+          )}
+        </View>
+      ))}
     </ScrollView>
   );
 }
