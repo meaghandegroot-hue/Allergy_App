@@ -66,7 +66,9 @@ export default function ReportScreen() {
         <Text style={[ui.body, { marginTop: 8 }]}>
           {sentOnline
             ? 'Your report was sent to our team and the restaurant.'
-            : 'Your report is saved on this phone. Once accounts are set up, reports will go to our team and the restaurant.'}
+            : supabase
+              ? 'Your report is saved on this phone. Log in from the Account tab so reports reach our team and the restaurant.'
+              : 'Your report is saved on this phone.'}
         </Text>
         <Text style={[ui.body, { marginTop: 12, color: colors.danger }]}>
           If you are having a reaction, call 911 or use your epinephrine auto-injector.

@@ -1,10 +1,12 @@
 import { colors } from '@/constants/ui';
+import { AuthProvider } from '@/store/auth';
 import { ProfilesProvider } from '@/store/profiles';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 export default function RootLayout() {
   return (
+    <AuthProvider>
     <ProfilesProvider>
       <StatusBar style="dark" />
       <Stack
@@ -21,5 +23,6 @@ export default function RootLayout() {
         <Stack.Screen name="report/[id]" options={{ title: 'Report a problem', presentation: 'modal' }} />
       </Stack>
     </ProfilesProvider>
+    </AuthProvider>
   );
 }

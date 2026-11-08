@@ -3,7 +3,7 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Platform } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import 'react-native-url-polyfill/auto';
 
 const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
@@ -25,3 +25,11 @@ export const supabase: SupabaseClient | null =
     : null;
 
 export const isBackendConfigured = supabase !== null;
+
+// On phones, only refresh the login session while the app is open.
+if (supabase && Platform.OS !== 'web') {
+  AppState.addEventListener('change', (state) => {
+    if (state === 'active') supabase.auth.startAutoRefresh();
+    else supabase.auth.stopAutoRefresh();
+  });
+}

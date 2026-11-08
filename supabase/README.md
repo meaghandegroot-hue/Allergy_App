@@ -13,6 +13,9 @@ The app works without this — it shows the sample restaurants in `data/`. Follo
 1. In the project, open **SQL Editor** → **New query**.
 2. Paste everything from [`migrations/0001_initial_schema.sql`](migrations/0001_initial_schema.sql) and click **Run**.
 3. New query again: paste [`seed.sql`](seed.sql) and click **Run**. This adds the 50 allergens and the 5 sample Vernon restaurants.
+4. New query again: paste [`migrations/0002_delete_account.sql`](migrations/0002_delete_account.sql) and click **Run**. This lets people delete their own account from the app.
+
+Any later file in `migrations/` gets run the same way, in number order.
 
 ## 3. Connect the app
 

@@ -24,6 +24,7 @@ export default function RestaurantScreen() {
   }
 
   const yours = allergenIds.filter((a) => restaurant.accommodates.includes(a));
+  const missing = allergenIds.filter((a) => !restaurant.accommodates.includes(a));
   const others = restaurant.accommodates.filter((a) => !allergenIds.includes(a));
 
   return (
@@ -52,6 +53,18 @@ export default function RestaurantScreen() {
             ))}
           </View>
         </>
+      )}
+
+      {missing.length > 0 && (
+        <View style={[ui.banner, { marginTop: 12, marginBottom: 0 }]}>
+          <Text style={[ui.bannerText, { fontWeight: '600' }]}>
+            ⚠️ Not listed: {missing.map(allergenName).join(', ')}
+          </Text>
+          <Text style={[ui.bannerText, { marginTop: 4 }]}>
+            This restaurant hasn’t said it can handle {missing.length === 1 ? 'this' : 'these'}.
+            Call before you go.
+          </Text>
+        </View>
       )}
 
       {customAllergens.length > 0 && (

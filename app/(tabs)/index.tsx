@@ -45,8 +45,7 @@ export default function FindScreen() {
     ? allergens.filter((a) => a.name.toLowerCase().includes(q)).map((a) => a.id)
     : [];
 
-  const results = restaurants
-    .filter((r) => allergenIds.every((id) => r.accommodates.includes(id)))
+  const searched = restaurants
     .filter(
       (r) =>
         !q ||
@@ -54,8 +53,20 @@ export default function FindScreen() {
         r.cuisine.toLowerCase().includes(q) ||
         queryAllergenIds.some((id) => r.accommodates.includes(id))
     )
-    .map((r) => ({ restaurant: r, km: here ? distanceKm(here, r) : null }))
-    .sort((a, b) => (a.km ?? 0) - (b.km ?? 0));
+    .map((r) => {
+      const covered = allergenIds.filter((id) => r.accommodates.includes(id));
+      const missing = allergenIds.filter((id) => !r.accommodates.includes(id));
+      return { restaurant: r, km: here ? distanceKm(here, r) : null, covered, missing };
+    });
+  const byDistance = (a: { km: number | null }, b: { km: number | null }) =>
+    (a.km ?? 0) - (b.km ?? 0);
+
+  // Full matches: handle every allergy at the table.
+  const results = searched.filter((x) => x.missing.length === 0).sort(byDistance);
+  // Close matches: handle some of them. Most allergies covered first, then nearest.
+  const closeMatches = searched
+    .filter((x) => x.covered.length > 0 && x.missing.length > 0)
+    .sort((a, b) => b.covered.length - a.covered.length || byDistance(a, b));
 
   return (
     <SafeAreaView style={ui.screen} edges={['top']}>
@@ -153,9 +164,11 @@ export default function FindScreen() {
 
         {!loading && !error && results.length === 0 && (
           <Text style={ui.body}>
-            {allergenIds.length
-              ? 'No restaurant accommodates all of these allergies yet. Try unticking someone under “Who’s eating?”'
-              : 'No restaurants match your search.'}
+            {!allergenIds.length
+              ? 'No restaurants match your search.'
+              : closeMatches.length
+                ? 'No restaurant accommodates all of these allergies yet. The close matches below handle some of them.'
+                : 'No restaurant accommodates these allergies yet.'}
           </Text>
         )}
 
@@ -184,6 +197,41 @@ export default function FindScreen() {
             )}
           </Pressable>
         ))}
+
+        {!loading && !error && closeMatches.length > 0 && (
+          <>
+            <Text style={[ui.sectionTitle, { marginTop: 28 }]}>Close matches</Text>
+            <Text style={[ui.muted, { marginBottom: 10 }]}>
+              These handle some of your allergies, not all. Check with staff before you go.
+            </Text>
+            {closeMatches.map(({ restaurant: r, km, covered, missing }) => (
+              <Pressable
+                key={r.id}
+                style={[ui.card, { borderColor: '#f0d9b5' }]}
+                onPress={() => router.push({ pathname: '/restaurant/[id]', params: { id: r.id } })}
+              >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{ fontSize: 18, fontWeight: '600', color: colors.text, flex: 1 }}>
+                    {r.name}
+                  </Text>
+                  {km !== null && <Text style={ui.muted}>{formatKm(km)}</Text>}
+                </View>
+                <Text style={ui.muted}>
+                  {r.cuisine} · {r.address}
+                </Text>
+                <Text style={{ marginTop: 8, color: colors.accent, fontWeight: '600' }}>
+                  ✓ Handles {covered.map(allergenName).join(', ')}
+                </Text>
+                <Text style={{ marginTop: 2, color: colors.warn, fontWeight: '600' }}>
+                  ⚠️ Not listed: {missing.map(allergenName).join(', ')}
+                </Text>
+                {r.callAhead && (
+                  <Text style={{ marginTop: 4, color: colors.warn }}>📞 Call ahead recommended</Text>
+                )}
+              </Pressable>
+            ))}
+          </>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

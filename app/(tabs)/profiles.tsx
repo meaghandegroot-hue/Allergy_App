@@ -1,5 +1,6 @@
 import { allergenName } from '@/data/allergens';
 import { colors, ui } from '@/constants/ui';
+import { useAuth } from '@/store/auth';
 import { useProfiles } from '@/store/profiles';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -7,7 +8,8 @@ import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfilesScreen() {
-  const { profiles, addProfile } = useProfiles();
+  const { profiles, addProfile, syncError } = useProfiles();
+  const { available, session } = useAuth();
   const [name, setName] = useState('');
 
   const create = () => {
@@ -23,8 +25,20 @@ export default function ProfilesScreen() {
       <ScrollView contentContainerStyle={ui.content} keyboardShouldPersistTaps="handled">
         <Text style={ui.title}>Allergy profiles</Text>
         <Text style={ui.subtitle}>
-          Add a profile for each person you eat with. Saved on this phone.
+          Add a profile for each person you eat with.{' '}
+          {session ? 'Saved to your account.' : 'Saved on this phone.'}
         </Text>
+
+        {available && !session && (
+          <Pressable style={ui.banner} onPress={() => router.push('/account')}>
+            <Text style={ui.bannerText}>
+              Create an account or log in to keep these if you change phones →
+            </Text>
+          </Pressable>
+        )}
+        {syncError && (
+          <Text style={[ui.muted, { color: colors.danger, marginBottom: 12 }]}>{syncError}</Text>
+        )}
 
         {profiles.map((p) => {
           const all = [...p.allergenIds.map(allergenName), ...p.customAllergens];

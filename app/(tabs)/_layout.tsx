@@ -25,6 +25,15 @@ export default function TabLayout() {
           tabBarIcon: ({ color, size }) => <Ionicons name="people" color={color} size={size} />,
         }}
       />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title: 'Account',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-circle" color={color} size={size} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
