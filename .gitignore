@@ -47,3 +47,6 @@ demo/
 
 # Private planning docs (competitors, sales, trademarks, roadmap) — never commit
 private/
+
+# Local editor/tool settings
+.claude/
