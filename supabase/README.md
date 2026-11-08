@@ -41,7 +41,7 @@ Any later file in `migrations/` gets run the same way, in number order.
 - Delete sample restaurants: `delete from public.restaurants where is_sample;`
 - Have the allergen list reviewed by a dietitian or allergist.
 
-## Assumptions to revisit (see docs/ROADMAP.md open questions)
+## Assumptions to revisit
 
 - Accommodation is stored **per restaurant**. Per-dish would add a `dishes` table.
 - Restaurants that only partly match are **hidden** in the app.

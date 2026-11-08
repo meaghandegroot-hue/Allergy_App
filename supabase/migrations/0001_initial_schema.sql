@@ -1,6 +1,6 @@
 -- Allergy App — initial database schema (Phase 2)
 --
--- Assumptions (from docs/ROADMAP.md open questions — easy to change later):
+-- Assumptions (easy to change later):
 --   * Allergen accommodation is per restaurant (a dishes table can be added later).
 --   * Only restaurants with an active paid listing are shown to users (is_listed).
 --   * Partial matches are hidden in the app, so no extra data is needed for warnings.

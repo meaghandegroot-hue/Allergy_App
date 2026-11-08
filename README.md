@@ -1,67 +1,43 @@
 # OptionEats
 
-An app that helps people with lesser-known food allergies find restaurants that commit to accommodating them. Starting in Vernon, BC.
+A mobile app that helps people with lesser-known food allergies find restaurants that will accommodate them. It starts with Vernon, BC.
 
-## Project docs
+Most allergy apps only cover the "top 9" allergens. OptionEats has a list of 50 that focuses on the less common ones. It lets a whole table (family or friends) combine their allergies and shows which restaurants can handle all of them.
 
-All planning documents are in the [docs](docs) folder:
+## Features
 
-- [Roadmap](docs/ROADMAP.md): decisions, phases and open questions
-- [Demo script](docs/DEMO_SCRIPT.md): walkthrough of every feature
-- [Competitors](docs/COMPETITORS.md): similar apps and what we can learn from them
-- [Sales kit](docs/SALES_PITCH.md): pitch, objections and scripts for restaurants
-- [Trademarks](docs/TRADEMARKS.md): name checks and how to register the name
-- [Backend setup](supabase/README.md): Supabase setup
+- **Family allergy profiles:** pick from 50 allergens or add your own, for everyone you eat with
+- **Restaurant search:** combine the allergies of whoever's eating, then search by name or by distance from you
+- **Close matches:** restaurants that handle some of the table's allergies, with the missing ones flagged
+- **Restaurant pages:** what each restaurant accommodates, with warnings for allergies it hasn't listed
+- **Report a problem:** flag a restaurant listing that's wrong
+- **Accounts:** email sign-up and log-in, profiles synced to your account, and account deletion
+- **Works offline:** without a backend it runs on sample data and saves everything on the device
 
----
+## Tech stack
 
-# Welcome to your Expo app 👋
+- **React Native + Expo** (Expo Router, file-based navigation), written in **TypeScript**
+- **Supabase** for the database (Postgres with row-level security) and authentication
+- AsyncStorage for on-device data, and expo-location for "near me" search
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
-
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Run it locally
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Then open it in Expo Go, an iOS simulator, an Android emulator or a web browser.
 
-## Learn more
+The app runs without any setup on 5 sample (fictional) Vernon restaurants. To connect a real backend, copy `.env.example` to `.env.local` and follow [supabase/README.md](supabase/README.md).
 
-To learn more about developing your project with Expo, look at the following resources:
+## Project structure
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```
+app/          Screens (Expo Router): tabs, profile, restaurant and report pages
+components/   Shared UI components
+data/         Allergen list, sample restaurants, data hooks
+store/        Auth and profile state
+lib/          Supabase client
+supabase/     Database migrations, seed data and setup guide
+```

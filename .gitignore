@@ -44,3 +44,6 @@ app-example
 
 # Demo videos (large files, kept out of git)
 demo/
+
+# Private planning docs (competitors, sales, trademarks, roadmap) — never commit
+private/
