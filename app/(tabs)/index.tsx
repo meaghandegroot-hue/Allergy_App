@@ -72,7 +72,7 @@ export default function FindScreen() {
     <SafeAreaView style={ui.screen} edges={['top']}>
       <ScrollView contentContainerStyle={ui.content} keyboardShouldPersistTaps="handled">
         <Text style={ui.title}>Find a restaurant</Text>
-        <Text style={ui.subtitle}>Vernon, BC restaurants that accommodate your allergies</Text>
+        <Text style={ui.subtitle}>Restaurants that accommodate your allergies</Text>
 
         <View style={ui.banner}>
           <Text style={ui.bannerText}>

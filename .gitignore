@@ -41,3 +41,6 @@ app-example
 # generated native folders
 /ios
 /android
+
+# Demo videos (large files, kept out of git)
+demo/
