@@ -15,6 +15,8 @@ export type Restaurant = {
   callAhead: boolean;
   notes: string;
   updated: string;
+  /** Fictional test data. */
+  isSample?: boolean;
 };
 
 export const restaurants: Restaurant[] = [
@@ -30,6 +32,7 @@ export const restaurants: Restaurant[] = [
     callAhead: false,
     notes: 'Makes stocks and sauces in-house, so can leave out garlic, onion and celery',
     updated: '2026-10-28',
+    isSample: true,
   },
   {
     id: '2',
@@ -43,6 +46,7 @@ export const restaurants: Restaurant[] = [
     callAhead: true,
     notes: 'Please call ahead for alpha-gal so the kitchen can plan fryer oil',
     updated: '2026-10-15',
+    isSample: true,
   },
   {
     id: '3',
@@ -59,6 +63,7 @@ export const restaurants: Restaurant[] = [
     callAhead: false,
     notes: 'Menu changes weekly — staff can list every ingredient on request',
     updated: '2026-11-02',
+    isSample: true,
   },
   {
     id: '4',
@@ -72,6 +77,7 @@ export const restaurants: Restaurant[] = [
     callAhead: true,
     notes: 'Buckwheat-free noodles available; sesame oil can be swapped',
     updated: '2026-09-30',
+    isSample: true,
   },
   {
     id: '5',
@@ -85,5 +91,6 @@ export const restaurants: Restaurant[] = [
     callAhead: false,
     notes: 'Labels every baked item with a full ingredient card',
     updated: '2026-10-20',
+    isSample: true,
   },
 ];

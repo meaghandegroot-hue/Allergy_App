@@ -1,19 +1,24 @@
 import { allergenName } from '@/data/allergens';
-import { restaurants } from '@/data/restaurants';
+import { useRestaurants } from '@/data/useRestaurants';
 import { colors, ui } from '@/constants/ui';
 import { useDiningAllergies } from '@/store/profiles';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 
 export default function RestaurantScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { restaurants, loading } = useRestaurants();
   const restaurant = restaurants.find((r) => r.id === id);
   const { allergenIds, customAllergens } = useDiningAllergies();
 
   if (!restaurant) {
     return (
       <View style={[ui.screen, ui.content]}>
-        <Text style={ui.body}>Restaurant not found.</Text>
+        {loading ? (
+          <ActivityIndicator color={colors.accent} />
+        ) : (
+          <Text style={ui.body}>Restaurant not found.</Text>
+        )}
       </View>
     );
   }

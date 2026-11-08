@@ -1,5 +1,5 @@
 import { allergenName, allergens } from '@/data/allergens';
-import { restaurants } from '@/data/restaurants';
+import { useRestaurants } from '@/data/useRestaurants';
 import { colors, ui } from '@/constants/ui';
 import { useDiningAllergies, useProfiles } from '@/store/profiles';
 import { Coords, distanceKm, formatKm } from '@/utils/distance';
@@ -12,6 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function FindScreen() {
   const { profiles, diningIds, toggleDining, loaded } = useProfiles();
   const { allergenIds, customAllergens } = useDiningAllergies();
+  const { restaurants, loading, error } = useRestaurants();
+  const showingSamples = restaurants.some((r) => r.isSample);
 
   const [query, setQuery] = useState('');
   const [here, setHere] = useState<Coords | null>(null);
@@ -63,8 +65,8 @@ export default function FindScreen() {
 
         <View style={ui.banner}>
           <Text style={ui.bannerText}>
-            Sample restaurants for testing — not real listings yet. Always confirm your allergies
-            with staff when you order.
+            {showingSamples ? 'Sample restaurants for testing — not real listings yet. ' : ''}
+            Always confirm your allergies with staff when you order.
           </Text>
         </View>
 
@@ -146,7 +148,10 @@ export default function FindScreen() {
           {here ? ' · closest first' : ''}
         </Text>
 
-        {results.length === 0 && (
+        {loading && <ActivityIndicator color={colors.accent} style={{ marginVertical: 20 }} />}
+        {error && <Text style={[ui.body, { color: colors.danger }]}>{error}</Text>}
+
+        {!loading && !error && results.length === 0 && (
           <Text style={ui.body}>
             {allergenIds.length
               ? 'No restaurant accommodates all of these allergies yet. Try unticking someone under “Who’s eating?”'
