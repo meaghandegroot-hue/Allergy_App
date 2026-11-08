@@ -1,3 +1,20 @@
+# OptionEats
+
+An app that helps people with lesser-known food allergies find restaurants that commit to accommodating them. Starting in Vernon, BC.
+
+## Project docs
+
+All planning documents are in the [docs](docs) folder:
+
+- [Roadmap](docs/ROADMAP.md): decisions, phases and open questions
+- [Demo script](docs/DEMO_SCRIPT.md): walkthrough of every feature
+- [Competitors](docs/COMPETITORS.md): similar apps and what we can learn from them
+- [Sales kit](docs/SALES_PITCH.md): pitch, objections and scripts for restaurants
+- [Trademarks](docs/TRADEMARKS.md): name checks and how to register the name
+- [Backend setup](supabase/README.md): Supabase setup
+
+---
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
